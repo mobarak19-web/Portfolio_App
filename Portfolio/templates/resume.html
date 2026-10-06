@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card p-5 shadow-sm bg-white">
+    <h1 class="text-center mb-4">Curriculum Vitae</h1>
+    
+    <h3>Education</h3>
+    <ul class="list-group mb-4">
+        {% for edu in educations %}
+        <li class="list-group-item">
+            <strong>{{ edu.degree }}</strong> - {{ edu.institution }} (Passing Year: {{ edu.passing_year }}, Result: {{ edu.result }})
+        </li>
+        {% endfor %}
+    </ul>
+
+    <h3>Experience</h3>
+    <ul class="list-group mb-4">
+        {% for exp in experiences %}
+        <li class="list-group-item">
+            <strong>{{ exp.role }}</strong> at {{ exp.company_name }} ({{ exp.start_date }} to {% if exp.end_date %}{{ exp.end_date }}{% else %}Present{% endif %})<br>
+            <p>{{ exp.description }}</p>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <h3>Skills</h3>
+    <div class="row">
+        {% for skill in skills %}
+        <div class="col-md-6 mb-2">
+            <strong>{{ skill.name }}</strong>
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" style="width: {{ skill.proficiency }}%;" aria-valuenow="{{ skill.proficiency }}" aria-valuemin="0" aria-valuemax="100">{{ skill.proficiency }}%</div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

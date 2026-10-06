@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- Welcome Section -->
+<div class="jumbotron text-center bg-white p-5 rounded shadow-sm">
+    <h1>Welcome to My Interactive Portfolio</h1>
+    <p>Explore my skills, projects, and work experience below.</p>
+</div>
+
+
+<!-- Projects Section -->
+<h2 class="mt-5">Projects</h2>
+
+<div class="row">
+    {% for project in projects %}
+
+    <div class="col-md-4 mb-3">
+        <div class="card shadow-sm">
+            <div class="card-body">
+
+                <h5 class="card-title">
+                    {{ project.title }}
+                </h5>
+
+                <p class="card-text">
+                    {{ project.description }}
+                </p>
+
+                <small class="text-muted">
+                    Tech: {{ project.technology_used }}
+                </small>
+
+            </div>
+        </div>
+    </div>
+
+    {% empty %}
+
+    <div class="col-12">
+        <p>No projects available.</p>
+    </div>
+
+    {% endfor %}
+</div>
+
+
+<!-- Contact Section -->
+<h2 class="mt-5">Contact Me</h2>
+
+<div class="card p-4 shadow-sm col-md-6">
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        <!-- Name -->
+        <div class="mb-3">
+            {{ form.name.label_tag }}
+            {{ form.name }}
+        </div>
+
+
+        <!-- Email -->
+        <div class="mb-3">
+            {{ form.email.label_tag }}
+            {{ form.email }}
+        </div>
+
+
+        <!-- Subject -->
+        <div class="mb-3">
+            {{ form.subject.label_tag }}
+            {{ form.subject }}
+        </div>
+
+
+        <!-- Message -->
+        <div class="mb-3">
+            {{ form.message.label_tag }}
+            {{ form.message }}
+        </div>
+
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary">
+            Send Message
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}

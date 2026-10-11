@@ -1,0 +1,323 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container py-4">
+
+    <!-- Resume Actions -->
+    <div class="d-flex justify-content-between mb-4">
+        <a href="{% url 'home' %}" class="btn btn-secondary">
+            &larr; Back to Portfolio
+        </a>
+
+        <button onclick="window.print()" class="btn btn-primary">
+            Print / Save as PDF
+        </button>
+    </div>
+
+    <!-- Resume Header -->
+    <div class="card border-0 shadow-sm p-4">
+
+        <div class="row align-items-center border-bottom pb-4">
+
+            <div class="col-md-9">
+
+                <h1 class="fw-bold">
+                    {% if profile %}
+                        {{ profile.user.full_name|default:profile.user.username }}
+                    {% else %}
+                        Your Name
+                    {% endif %}
+                </h1>
+
+                <h5 class="text-primary">
+                    {{ profile.designation|default:"Software Developer" }}
+                </h5>
+
+                <p class="text-muted mb-0">
+
+                    {% if profile.phone %}
+                        {{ profile.phone }}
+                    {% endif %}
+
+                    {% if request.user.email %}
+                        | {{ request.user.email }}
+                    {% endif %}
+
+                    {% if profile.address %}
+                        | {{ profile.address }}
+                    {% endif %}
+
+                </p>
+
+            </div>
+
+            <div class="col-md-3 text-md-end mt-3 mt-md-0">
+
+                {% if profile and profile.user.pro_pic %}
+
+                    <img src="{{ profile.user.pro_pic.url }}"
+                         alt="Profile Picture"
+                         width="100"
+                         height="100"
+                         class="rounded">
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+        <!-- Professional Summary -->
+        <section class="mt-4">
+
+            <h3 class="border-bottom pb-2">
+                Professional Summary
+            </h3>
+
+            {% if profile.biography %}
+
+                <p class="text-muted">
+                    {{ profile.biography|linebreaksbr }}
+                </p>
+
+            {% else %}
+
+                <p class="text-muted">
+                    No biography available.
+                </p>
+
+            {% endif %}
+
+        </section>
+
+
+        <!-- Technical Skills -->
+        <section class="mt-4">
+
+            <h3 class="border-bottom pb-2">
+                Technical Skills
+            </h3>
+
+            {% if skills %}
+
+                <div class="d-flex flex-wrap gap-2">
+
+                    {% for skill in skills %}
+
+                        <span class="badge bg-primary">
+                            {{ skill.name }}
+                        </span>
+
+                    {% endfor %}
+
+                </div>
+
+            {% else %}
+
+                <p class="text-muted">
+                    No skills available.
+                </p>
+
+            {% endif %}
+
+        </section>
+
+
+        <!-- Education -->
+        <section class="mt-4">
+
+            <h3 class="border-bottom pb-2">
+                Education
+            </h3>
+
+            {% for education in educations %}
+
+                <div class="mb-3">
+
+                    <div class="d-flex justify-content-between">
+
+                        <h5 class="mb-1">
+                            {{ education.degree }}
+                        </h5>
+
+                        <span class="text-muted">
+                            {{ education.start_year }} -
+                            {{ education.end_year|default:"Present" }}
+                        </span>
+
+                    </div>
+
+                    <p class="mb-1 fw-semibold">
+                        {{ education.institution }}
+                    </p>
+
+                    {% if education.subject %}
+
+                        <p class="text-muted mb-0">
+                            Subject: {{ education.subject }}
+                        </p>
+
+                    {% endif %}
+
+                </div>
+
+            {% empty %}
+
+                <p class="text-muted">
+                    No education information available.
+                </p>
+
+            {% endfor %}
+
+        </section>
+
+
+        <!-- Work Experience -->
+        <section class="mt-4">
+
+            <h3 class="border-bottom pb-2">
+                Work Experience
+            </h3>
+
+            {% for experience in experiences %}
+
+                <div class="mb-3">
+
+                    <div class="d-flex justify-content-between">
+
+                        <h5 class="mb-1">
+                            {{ experience.job_title }}
+                        </h5>
+
+                        <span class="text-muted">
+
+                            {{ experience.start_date|date:"M Y" }} -
+
+                            {% if experience.currently_working %}
+
+                                Present
+
+                            {% elif experience.end_date %}
+
+                                {{ experience.end_date|date:"M Y" }}
+
+                            {% else %}
+
+                                Not specified
+
+                            {% endif %}
+
+                        </span>
+
+                    </div>
+
+                    <p class="fw-semibold mb-1">
+                        {{ experience.company }}
+                    </p>
+
+                    {% if experience.description %}
+
+                        <p class="text-muted">
+                            {{ experience.description|linebreaksbr }}
+                        </p>
+
+                    {% endif %}
+
+                </div>
+
+            {% empty %}
+
+                <p class="text-muted">
+                    No experience information available.
+                </p>
+
+            {% endfor %}
+
+        </section>
+
+
+        <!-- Projects -->
+        <section class="mt-4">
+
+            <h3 class="border-bottom pb-2">
+                Projects
+            </h3>
+
+            {% for project in projects %}
+
+                <div class="mb-3">
+
+                    <h5>
+                        {{ project.title }}
+                    </h5>
+
+                    {% if project.description %}
+
+                        <p class="text-muted">
+                            {{ project.description|linebreaksbr }}
+                        </p>
+
+                    {% endif %}
+
+                    {% if project.technologies %}
+
+                        <p class="mb-1">
+                            <strong>Technologies:</strong>
+                            {{ project.technologies }}
+                        </p>
+
+                    {% endif %}
+
+                    {% if project.github_url %}
+
+                        <a href="{{ project.github_url }}"
+                           target="_blank"
+                           class="btn btn-dark btn-sm">
+
+                            GitHub Repository
+
+                        </a>
+
+                    {% endif %}
+
+                </div>
+
+            {% empty %}
+
+                <p class="text-muted">
+                    No projects available.
+                </p>
+
+            {% endfor %}
+
+        </section>
+
+
+        <!-- Footer -->
+        <div class="text-center border-top pt-3 mt-4">
+
+            <small class="text-muted">
+                Resume generated from my personal portfolio.
+            </small>
+
+        </div>
+
+    </div>
+
+
+    <!-- Bottom Button -->
+    <div class="text-center mt-3">
+
+        <button onclick="window.print()" class="btn btn-primary">
+            Print / Save as PDF
+        </button>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
